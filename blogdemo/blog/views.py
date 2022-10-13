@@ -5,13 +5,13 @@ from django.views.generic import ListView
 
 # Create your views here.
 class PostListView(ListView):
-    queryset = Post.objects.all()
+    queryset = Post.objects.all().filter(status=Post.Status.PUBLISHED)
     context_object_name = 'posts'
     paginate_by = 3
     template_name = 'blog/post/post_list.html'
 
 def post_list_view(request):
-    posts = Post.objects.all()
+    posts = Post.objects.all().filter(status=Post.Status.PUBLISHED)
     paginator = Paginator(posts, 3) # 3 post per page
     page_number = request.GET.get('page', 1)
     try:
