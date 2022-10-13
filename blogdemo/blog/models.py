@@ -2,7 +2,7 @@ from django.utils import timezone
 from django.db import models
 
 # Create your models here.
-class Post(models):
+class Post(models.Model):
     class Status(models.TextChoices):
         DRAFT = 'DF', 'Draft'
         PUBLISHED = 'PB', 'Published'
