@@ -3,7 +3,7 @@ from django.db import models
 
 # Create your models here.
 class Post(models):
-    class Status(models.TextChoices()):
+    class Status(models.TextChoices):
         DRAFT = 'DF', 'Draft'
         PUBLISHED = 'PB', 'Published'
     title = models.CharField(max_length=250)
