@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Post
-from django.core.paginator import Paginator, EmptyPage
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Create your views here.
 def post_list_view(request):
@@ -9,6 +9,8 @@ def post_list_view(request):
     page_number = request.GET.get('page', 1)
     try:
         posts = paginator.page(page_number)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
     except:
         posts = paginator.page(paginator.num_pages)
     template_name = 'blog/post/post_list.html'
