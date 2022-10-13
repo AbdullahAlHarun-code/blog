@@ -13,5 +13,6 @@
     </p>
     {{ post.body|truncatewords:30|linebreaks }}
   {% endfor %}
-  {% include 'paginator.html' with page=posts%}
+  <!-- {% include 'paginator.html' with page=posts%} this paginator for function based view-->
+  {% include 'paginator.html' with page=page_obj%} <!-- this paginator for class based view-->
 {% endblock %}
