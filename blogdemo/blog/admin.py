@@ -10,3 +10,4 @@ class PostAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)} # when we create post and set title slug field aotomatic create by title
     date_hierarchy =  'publish' # 
     ordering = ['status', 'publish'] # 
+    raw_id_fields = ['author'] # author field now select by user id
