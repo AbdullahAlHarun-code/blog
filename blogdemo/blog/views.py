@@ -1,13 +1,16 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Post
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage
 
 # Create your views here.
 def post_list_view(request):
     posts = Post.objects.all()
     paginator = Paginator(posts, 3) # 3 post per page
     page_number = request.GET.get('page', 1)
-    posts = paginator.page(page_number)
+    try:
+        posts = paginator.page(page_number)
+    except:
+        posts = paginator.page(paginator.num_pages)
     template_name = 'blog/post/post_list.html'
     context = {'posts':posts}
 
