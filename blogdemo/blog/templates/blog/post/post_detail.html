@@ -6,4 +6,5 @@
     Published {{ post.publish }} by {{ post.author }}
   </p>
   {{ post.body|linebreaks }}
+  <a href="{% url 'blog:post_list_view'%}">Home</a>
 {% endblock %}
