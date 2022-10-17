@@ -3,17 +3,18 @@ from .models import Post
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import ListView
 from .forms import EmailPostForm
+from slugify import slugify
 
 # Create your views here.
 class PostListView(ListView):
     queryset = Post.objects.all().filter(status=Post.Status.PUBLISHED)
     context_object_name = 'posts'
-    paginate_by = 3
+    paginate_by = 20
     template_name = 'blog/post/post_list.html'
 
 def post_list_view(request):
     posts = Post.objects.all().filter(status=Post.Status.PUBLISHED)
-    paginator = Paginator(posts, 3) # 3 post per page
+    paginator = Paginator(posts, 20) # 3 post per page
     page_number = request.GET.get('page', 1)
     try:
         posts = paginator.page(page_number)
@@ -49,3 +50,20 @@ def post_share(request, post_id):
     template_name = 'blog/post/share.html'
     context = {'post':post, 'form': form}
     return render(request, template_name, context)
+
+def fakerdemo(request):
+    from faker import Faker
+    fk = Faker()
+    for i in range(100):
+        title=fk.sentence()
+        ob_post = Post.objects.create(
+            title=title,
+            body = fk.paragraph(nb_sentences=180),
+            author_id = 1,
+            status=Post.Status.PUBLISHED,
+            slug= slugify(title)
+        )
+    context = {
+        'all_new_post': ob_post
+    }
+    return render(request, 'blog/facker.html',context)
