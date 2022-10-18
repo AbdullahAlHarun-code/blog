@@ -2,9 +2,10 @@ from django.shortcuts import render, get_object_or_404
 from .models import Post
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import ListView
-from .forms import EmailPostForm
+from .forms import EmailPostForm, CommentForm
 from slugify import slugify
 from django.core.mail import send_mail
+from django.views.decorators.http import require_psot
 
 # Create your views here.
 class PostListView(ListView):
@@ -78,3 +79,21 @@ def fakerdemo(request):
         'all_new_post': ob_post
     }
     return render(request, 'blog/facker.html',context)
+
+
+@require_post
+def post_comment(request, post_id):
+    post = get_object_or_404(Post, id=post_id, status=Post.Status.PUBLISHED)
+    comment = None
+    form = CommentForm(data=request.POST)
+    if form.isValid():
+        comment = form.save(commit=False)
+        comment.post = post 
+        comment.save()
+    template = 'blog/post/comment.html'
+    context={
+        'post':post,
+        'form': form,
+        'comment': comment
+    }
+    return render(request, template, context)
