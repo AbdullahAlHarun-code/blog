@@ -5,7 +5,7 @@ from django.views.generic import ListView
 from .forms import EmailPostForm, CommentForm
 from slugify import slugify
 from django.core.mail import send_mail
-from django.views.decorators.http import require_psot
+from django.views.decorators.http import require_POST
 
 # Create your views here.
 class PostListView(ListView):
@@ -81,7 +81,7 @@ def fakerdemo(request):
     return render(request, 'blog/facker.html',context)
 
 
-@require_post
+@require_POST
 def post_comment(request, post_id):
     post = get_object_or_404(Post, id=post_id, status=Post.Status.PUBLISHED)
     comment = None
