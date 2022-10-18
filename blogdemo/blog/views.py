@@ -88,7 +88,7 @@ def post_comment(request, post_id):
     post = get_object_or_404(Post, id=post_id, status=Post.Status.PUBLISHED)
     comment = None
     form = CommentForm(data=request.POST)
-    if form.isValid():
+    if form.is_valid():
         comment = form.save(commit=False)
         comment.post = post 
         comment.save()
