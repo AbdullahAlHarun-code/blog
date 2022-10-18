@@ -12,4 +12,20 @@
       Share this post
     </a>
   </p>
+  {% with comments.count as total_comments %}
+  <h2>
+    {{ total_comments }} comment{{total_comments|pluralize}}
+  </h2>
+  {% endwith %}
+  {% for comment in comments %}
+    <div>
+      <p>
+        Comment {{ forloop.counter }} by {{comment.name}}
+        {{ comment.created}}
+      </p>
+      {{ comment.body|linebreaks}}
+    </div>
+  {% empty %}
+    <p>There is no comments.</p>
+  {% endfor %}
 {% endblock %}

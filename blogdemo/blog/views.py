@@ -36,8 +36,10 @@ def post_detail(request, year, month, day, post):
             publish__month=month,
             publish__day=day
         )
+    comments = post.comments.filter(active=True)
+    form = CommentForm()
     template_name = 'blog/post/post_detail.html'
-    context = {'post':post}
+    context = {'post':post,'comments':comments, 'form': form}
     return render(request, template_name, context)
 
 
