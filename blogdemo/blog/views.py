@@ -11,7 +11,7 @@ from django.views.decorators.http import require_POST
 class PostListView(ListView):
     queryset = Post.objects.all().filter(status=Post.Status.PUBLISHED)
     context_object_name = 'posts'
-    paginate_by = 20
+    paginate_by = 10
     template_name = 'blog/post/post_list.html'
 
 def post_list_view(request):

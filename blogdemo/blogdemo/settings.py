@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blog.apps.BlogConfig',
+    'taggit',
 ]
 
 MIDDLEWARE = [
@@ -69,7 +70,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'blogdemo.wsgi.application'
-CSRF_TRUSTED_ORIGINS=['https://8000-abdullahalharunc-blog-rgku9983s81.ws-eu71.gitpod.io']
+CSRF_TRUSTED_ORIGINS=['https://8000-abdullahalharunc-blog-v0u5g0129u3.ws-eu72.gitpod.io']
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
