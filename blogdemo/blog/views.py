@@ -6,6 +6,7 @@ from .forms import EmailPostForm, CommentForm
 from slugify import slugify
 from django.core.mail import send_mail
 from django.views.decorators.http import require_POST
+from taggit.models import Tag 
 
 # Create your views here.
 class PostListView(ListView):
@@ -14,10 +15,14 @@ class PostListView(ListView):
     paginate_by = 10
     template_name = 'blog/post/post_list.html'
 
-def post_list_view(request):
+def post_list_view(request, tag_slug=None):
     posts = Post.objects.all().filter(status=Post.Status.PUBLISHED)
-    paginator = Paginator(posts, 20) # 3 post per page
     page_number = request.GET.get('page', 1)
+    tag = None
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        posts = posts.filter(tags__in=[tag])
+    paginator = Paginator(posts, 10) # 3 post per page
     try:
         posts = paginator.page(page_number)
     except PageNotAnInteger:
@@ -25,7 +30,7 @@ def post_list_view(request):
     except:
         posts = paginator.page(paginator.num_pages)
     template_name = 'blog/post/post_list.html'
-    context = {'posts':posts}
+    context = {'posts':posts, 'tag':tag}
 
     return render(request, template_name, context)
 
