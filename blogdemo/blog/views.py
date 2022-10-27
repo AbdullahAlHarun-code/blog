@@ -7,6 +7,7 @@ from slugify import slugify
 from django.core.mail import send_mail
 from django.views.decorators.http import require_POST
 from taggit.models import Tag 
+from django.db.models import Count
 
 # Create your views here.
 class PostListView(ListView):
@@ -41,10 +42,13 @@ def post_detail(request, year, month, day, post):
             publish__month=month,
             publish__day=day
         )
+    post_tags_ids = post.tags.values_list('id', flat=True)
+    similar_posts = Post.published.filter(tags__in=post_tags_ids).exclude(id=post.id)
+    similar_posts = similar_posts.annotate(same_tags=Count('tags')).order_by('-same_tags', '-publish')[:2]
     comments = post.comments.filter(active=True)
     form = CommentForm()
     template_name = 'blog/post/post_detail.html'
-    context = {'post':post,'comments':comments, 'form': form}
+    context = {'post':post,'comments':comments, 'form': form, 'similar_posts':similar_posts}
     return render(request, template_name, context)
 
 
